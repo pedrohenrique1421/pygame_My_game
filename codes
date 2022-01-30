@@ -1,0 +1,127 @@
+import pygame
+from pygame.locals import *
+from sys import exit
+from random import randint
+import time
+
+pygame.init()
+
+
+largura_x = 800
+altura_y = 600
+
+pontos = 0
+fonte = pygame.font.SysFont('comicsansms', 40, bold=True, italic=True)
+
+
+pontuaçao = 1000
+vel = 10
+velocidade = 15
+x_controle = velocidade
+y_controle = 0
+x_cobra = int(largura_x/2) 
+y_cobra = 500
+py = 0
+
+x = randint(0,150)
+x1 = randint(0,150)
+x2 = randint(0,150)
+x3 = randint(0,150)
+
+
+
+y = randint(0,150)
+y1 = randint(0,150)
+y2 = randint(0,150)
+y3 = randint(0,150)
+
+def reiniciar_jogo():
+    global pontos, vel, velocidade, x_controle, y_controle, x_cobra, y_cobra
+    pontos = 0
+    vel = 10
+    velocidade = 15
+    x_controle = velocidade
+    y_controle = 0
+    x_cobra = int(largura_x/2) 
+    y_cobra = 500
+    py = 0
+    
+
+
+
+fundo = pygame.image.load("background1.png")
+tela = pygame.display.set_mode((largura_x, altura_y))
+pygame.display.set_caption("My Game")
+
+
+
+while True:
+    
+    
+    
+    mensagem = f'Pontos: {pontos}'
+    texto_formatado = fonte.render(mensagem, True, (255,255,255))
+    tela.blit(fundo , (0,0))
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            exit()
+    
+    if event.type == KEYDOWN:
+            if event.key == K_LEFT:
+                x_cobra = x_cobra - velocidade
+                y_cobra = 500
+            if event.key == K_RIGHT:
+                x_cobra =  x_cobra + velocidade
+                y_cobra = 500
+    
+    square = pygame.draw.rect(tela, (0,255,0), (x_cobra,y_cobra,20,20))
+
+    gota = pygame.draw.rect(tela, (170, 255, 255), (x, y, 7, 30))
+    gota1 = pygame.draw.rect(tela, (145, 255, 255), (x1, y1, 7, 30))
+    gota2 = pygame.draw.rect(tela, (145, 255, 255), (x2, y2, 7, 30))
+    gota3 = pygame.draw.rect(tela, (145, 255, 255), (x3, y3, 7, 30))
+            
+    y = y + vel
+    y1 = y1 + vel
+    y2 = y2 + vel
+    y3 = y3 + vel
+    pontos = pontos + 1
+    
+    if y >= 600 and y2 >= 600 and y3 >= 600:
+        y = randint(0,10)
+        y1 = randint(0,10)
+        y2 = randint(0,10)
+        y3 = randint(0,10)
+        x = randint(0,800)
+        x1 = randint(0,800)
+        x2 = randint(0,800)
+        x3 = randint(0,800)
+    if pontos == pontuaçao:
+        vel = vel + 10
+        pontuaçao = pontuaçao + 1000
+    
+    elif square.colliderect(gota):
+        py = True
+        fonte2 = pygame.font.SysFont('arial', 20, True, True)
+        mensagem = 'Game over! Pressione a tecla R para jogar novamente'
+        texto_formatado = fonte2.render(mensagem, True, (255,215,0)
+        
+    while py == True:
+        tela.fill((255,255,255))
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                exit()
+            if event.type == KEYDOWN:
+                if event.key == K_r:
+                    reiniciar_jogo()
+
+            ret_texto.center = (largura_x//2, altura_y//2) 
+            tela.blit(texto_formatado)
+            pygame.display.update()
+                                        
+    
+    
+    tela.blit(texto_formatado, (500,40))
+    pygame.display.flip()
