@@ -2,3 +2,4 @@
 -A simple code                                   
 -☜(ﾟヮﾟ☜)                                      
 -The developer its me                                          
+-PLEASE HELP (T_T)
