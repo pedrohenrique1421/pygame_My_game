@@ -1,5 +1,6 @@
 -A code maked with a pygame library                           
 -A simple code                                   
 -☜(ﾟヮﾟ☜)                                      
--The developer its me                                          
-
+-The developer its me                                              
+-codes2 is for use on google colaboratory                    
+-(￣y▽,￣)╭                             
