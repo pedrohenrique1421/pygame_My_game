@@ -6,29 +6,28 @@ import time
 
 pygame.init()
 
-
 largura_x = 800
 altura_y = 600
 
 pontos = 0
 fonte = pygame.font.SysFont('comicsansms', 40, bold=True, italic=True)
+fonte1 = pygame.font.SysFont('comicsansms', 30, bold=True, italic=True)
+fonte2 = pygame.font.SysFont('comicsansms', 15, bold=True, italic=True)
 
-
-pontuaçao = 1000
-vel = 10
+pontuaçao = 100
+vel = 1
 velocidade = 15
 x_controle = velocidade
 y_controle = 0
 x_cobra = int(largura_x/2) 
 y_cobra = 500
-py = 0
+morreu = False
+gotas = []
 
 x = randint(0,150)
 x1 = randint(0,150)
 x2 = randint(0,150)
 x3 = randint(0,150)
-
-
 
 y = randint(0,150)
 y1 = randint(0,150)
@@ -36,31 +35,32 @@ y2 = randint(0,150)
 y3 = randint(0,150)
 
 def reiniciar_jogo():
-    global pontos, vel, velocidade, x_controle, y_controle, x_cobra, y_cobra
+    global pontos, vel, velocidade, x_controle, y_controle, x_cobra, y_cobra,morreu
     pontos = 0
-    vel = 10
+    vel = 1
     velocidade = 15
     x_controle = velocidade
     y_controle = 0
     x_cobra = int(largura_x/2) 
     y_cobra = 500
-    py = 0
-    
-
-
+    morreu = False
 
 fundo = pygame.image.load("background1.png")
 tela = pygame.display.set_mode((largura_x, altura_y))
 pygame.display.set_caption("My Game")
-
-
+relogio = pygame.time.Clock()
 
 while True:
     
-    
-    
+    relogio.tick(120)
     mensagem = f'Pontos: {pontos}'
-    texto_formatado = fonte.render(mensagem, True, (255,255,255))
+    texto_formatado = fonte.render(mensagem, True, (255,215,0))
+    mensagem1 = 'Pressione a tecla R para jogar novamente'
+    texto_formatado1 = fonte1.render(mensagem1, True, (255,255,255))
+    mensagem2 = 'Game over!'
+    texto_formatado2 = fonte.render(mensagem2, True, (255,0,0))
+    mensagem3 = 'Dev: Pedro <3'
+    texto_formatado3 = fonte2.render(mensagem3, True, (255,0,0))
     tela.blit(fundo , (0,0))
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -68,20 +68,24 @@ while True:
             exit()
     
     if event.type == KEYDOWN:
-            if event.key == K_LEFT:
+            if event.key == K_LEFT and x_cobra > 10:
                 x_cobra = x_cobra - velocidade
                 y_cobra = 500
-            if event.key == K_RIGHT:
+            else:
+                pass
+            if event.key == K_RIGHT and x_cobra <= 770:
                 x_cobra =  x_cobra + velocidade
                 y_cobra = 500
+            else:
+                pass
     
     square = pygame.draw.rect(tela, (0,255,0), (x_cobra,y_cobra,20,20))
 
-    gota = pygame.draw.rect(tela, (170, 255, 255), (x, y, 7, 30))
-    gota1 = pygame.draw.rect(tela, (145, 255, 255), (x1, y1, 7, 30))
-    gota2 = pygame.draw.rect(tela, (145, 255, 255), (x2, y2, 7, 30))
-    gota3 = pygame.draw.rect(tela, (145, 255, 255), (x3, y3, 7, 30))
-            
+    gota = pygame.draw.rect(tela, (170, 255, 255), (x, y, 10, 30))
+    gota1 = pygame.draw.rect(tela, (145, 255, 255), (x1, y1, 10, 30))
+    gota2 = pygame.draw.rect(tela, (145, 255, 255), (x2, y2, 10, 30))
+    gota3 = pygame.draw.rect(tela, (145, 255, 255), (x3, y3, 10, 30))
+    
     y = y + vel
     y1 = y1 + vel
     y2 = y2 + vel
@@ -89,26 +93,36 @@ while True:
     pontos = pontos + 1
     
     if y >= 600 and y2 >= 600 and y3 >= 600:
+        escolha = 0
         y = randint(0,10)
         y1 = randint(0,10)
         y2 = randint(0,10)
         y3 = randint(0,10)
-        x = randint(0,800)
-        x1 = randint(0,800)
-        x2 = randint(0,800)
-        x3 = randint(0,800)
-    if pontos == pontuaçao:
-        vel = vel + 10
-        pontuaçao = pontuaçao + 1000
+        x = randint(0,780)
+        x1 = randint(0,780)
+        x2 = randint(0,780)
+        x3 = randint(0,780)
     
-    elif square.colliderect(gota):
-        py = True
-        fonte2 = pygame.font.SysFont('arial', 20, True, True)
-        mensagem = 'Game over! Pressione a tecla R para jogar novamente'
-        texto_formatado = fonte2.render(mensagem, True, (255,215,0)
-        
-    while py == True:
-        tela.fill((255,255,255))
+    if pontos == pontuaçao:
+        vel = vel + 1
+        pontuaçao = pontuaçao + 100
+    
+    if square.colliderect(gota):
+        morreu = True
+    if square.colliderect(gota1):
+        morreu = True
+    if square.colliderect(gota2):
+        morreu = True
+    if square.colliderect(gota3):
+        morreu = True
+
+    while morreu == True:
+        tela.blit(fundo, (0,0))
+        tela.blit(texto_formatado, (270,320))
+        tela.blit(texto_formatado1, (100,260))
+        tela.blit(texto_formatado2, (280,160))
+        tela.blit(texto_formatado3, (10,580))
+        pygame.display.update()
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -116,12 +130,14 @@ while True:
             if event.type == KEYDOWN:
                 if event.key == K_r:
                     reiniciar_jogo()
-
-            ret_texto.center = (largura_x//2, altura_y//2) 
-            tela.blit(texto_formatado)
-            pygame.display.update()
-                                        
-    
+                    y = randint(0,10)
+                    y1 = randint(0,10)
+                    y2 = randint(0,10)
+                    y3 = randint(0,10)
+                    x = randint(0,780)
+                    x1 = randint(0,780)
+                    x2 = randint(0,780)
+                    x3 = randint(0,780)
     
     tela.blit(texto_formatado, (500,40))
     pygame.display.flip()
