@@ -4,26 +4,43 @@ from sys import exit
 from random import randint
 import time
 
+#inicia o jogo
 pygame.init()
 
+#define as variaveis do tamanho da tela
 largura_x = 800
 altura_y = 600
 
-pontos = 0
-fonte = pygame.font.SysFont('comicsansms', 40, bold=True, italic=True)
-fonte1 = pygame.font.SysFont('comicsansms', 30, bold=True, italic=True)
-fonte2 = pygame.font.SysFont('comicsansms', 15, bold=True, italic=True)
+#as fontes presentes no jogo
+fonte = pygame.font.SysFont('arial', 40, bold=True, italic=True)
+fonte1 = pygame.font.SysFont('arial', 30, bold=True, italic=True)
+fonte2 = pygame.font.SysFont('arial', 15, bold=True, italic=True)
+fonte3 = pygame.font.SysFont('arial', 50, bold=True, italic=True)
+fonte4 = pygame.font.SysFont('comicsansms', 100, bold=False, italic=True)
 
-pontuaçao = 100
-vel = 1
-velocidade = 15
+#variaveis do jogo como pontuaçao, velocidade das "gotas", velocidade do cubo, valores do controle...
+#onde o cubo aparece na tela, variavel de morte do cubo, variavel da pausa iniciaal do jogo, pontos.,
+pontuaçao = 10
+vel = 15
+velocidade = 10
 x_controle = velocidade
 y_controle = 0
 x_cobra = int(largura_x/2) 
 y_cobra = 500
 morreu = False
-gotas = []
+numb = 6
+pontos = 0
+contagem = 3
+gotas = 0,255,255
+pause = True
+pause2 = False
+menu_numb = 3
+corm1 = 255,0,255
+corm2 = 255,0,255
+corm3 = 255,0,255
 
+
+#valores das gotas
 x = randint(0,150)
 x1 = randint(0,150)
 x2 = randint(0,150)
@@ -34,39 +51,173 @@ y1 = randint(0,150)
 y2 = randint(0,150)
 y3 = randint(0,150)
 
+#função que reinicia o jogo
 def reiniciar_jogo():
-    global pontos, vel, velocidade, x_controle, y_controle, x_cobra, y_cobra,morreu
+    global pontos, vel, velocidade, x_controle, y_controle, x_cobra, y_cobra,morreu,pontuaçao
     pontos = 0
-    vel = 1
-    velocidade = 15
+    vel = 15
+    velocidade = 10
     x_controle = velocidade
     y_controle = 0
     x_cobra = int(largura_x/2) 
     y_cobra = 500
     morreu = False
-
-fundo = pygame.image.load("background1.png")
+    pontuaçao = 100
+    
+    
+#definidores de fundo(background), tela, nome da janela, fps, mensagens q apareceram na tela.
+fundo1 = pygame.image.load("background1.png")
+fundo2 = pygame.image.load("bridge.com_pixel-art-bridge-night_800x600.jpg")
+fundo3 = pygame.image.load("sky.png")
 tela = pygame.display.set_mode((largura_x, altura_y))
 pygame.display.set_caption("My Game")
 relogio = pygame.time.Clock()
-
+mensagem1 = 'Pressione a tecla space para jogar novamente'
+texto_formatado1 = fonte1.render(mensagem1, True, (255,255,255))
+mensagem2 = 'Game over!'
+texto_formatado2 = fonte.render(mensagem2, True, (255,0,0))
+mensagem3 = 'Dev: Pedro   v1.0'
+texto_formatado3 = fonte2.render(mensagem3, True, (127,0,255))
+    
+#looping principal
 while True:
     
-    relogio.tick(120)
+    while pause:
+        
+        tela.blit(fundo2 , (0,0))
+        mensagem41 = 'Começar'
+        texto_formatado41 = fonte3.render(mensagem41, True, (corm1))
+        mensagem42 = 'Opções '
+        texto_formatado42 = fonte3.render(mensagem42, True, (corm2))
+        mensagem43 = 'Sair'
+        texto_formatado43 = fonte3.render(mensagem43, True, (corm3))
+        mensagem44 = 'Casuality'
+        texto_formatado44 = fonte4.render(mensagem44, True, (255,0,255))
+        tela.blit(texto_formatado41, (310,250))#0
+        tela.blit(texto_formatado42, (320,310))#10
+        tela.blit(texto_formatado43, (360,370))#40
+        tela.blit(texto_formatado44, (200,100))
+        for event in pygame.event.get():
+            if event.type == KEYDOWN:
+                if event.key == K_DOWN and menu_numb > 1:
+                    menu_numb = menu_numb - 1
+                else:
+                    pass
+                if event.key == K_UP and menu_numb < 3:
+                    menu_numb = menu_numb + 1
+                else:
+                    pass
+            if event.type == QUIT:
+                pygame.quit()
+                exit()#ajeita a pourra do rgb do ttitulo
+        
+        if menu_numb == 3:
+            corm1 = 200,100,255
+        else:
+            corm1 = 255,0,255
+        if menu_numb == 2:
+            corm2 = 200,100,255
+        else:
+            corm2 = 255,0,255
+        if menu_numb == 1:
+            corm3 = 200,100,255
+        else:
+            corm3 = 255,0,255
+        if event.type == KEYDOWN:
+            if event.key == K_RETURN and menu_numb == 3:
+                numb = 1
+                pause = False
+            if event.key == K_RETURN and menu_numb == 2:
+                menu_numb = 3
+                pause2 = True
+            if event.key == K_RETURN and menu_numb == 1:
+                pygame.quit()
+                exit()
+        while pause2:
+            tela.blit(fundo2 , (0,0))
+            mensagem41 = 'Som'
+            texto_formatado41 = fonte3.render(mensagem41, True, (corm1))
+            mensagem42 = 'Musica '
+            texto_formatado42 = fonte3.render(mensagem42, True, (corm2))
+            mensagem43 = 'Voltar'
+            texto_formatado43 = fonte3.render(mensagem43, True, (corm3))
+            tela.blit(texto_formatado41, (310,250))#0
+            tela.blit(texto_formatado42, (330,310))#10
+            tela.blit(texto_formatado43, (420,370))#40
+            for event in pygame.event.get():
+                if event.type == KEYDOWN:
+                    if event.key == K_DOWN and menu_numb > 1:
+                        menu_numb = menu_numb - 1
+                    else:
+                        pass
+                    if event.key == K_UP and menu_numb < 3:
+                        menu_numb = menu_numb + 1
+                    else:
+                        pass
+                if event.type == QUIT:
+                    pygame.quit()
+                    exit()
+            if menu_numb == 3:
+                corm1 = 170,0,255
+            else:
+                corm1 = 127,0,255
+            if menu_numb == 2:
+                corm2 = 170,0,255
+            else:
+                corm2 = 127,0,255
+            if menu_numb == 1:
+                corm3 = 170,0,255
+            else:
+                corm3 = 127,0,255
+            if event.type == KEYUP:
+                if event.key == K_RETURN and menu_numb == 3:
+                    numb = 1
+                    pause = False
+                if event.key == K_RETURN and menu_numb == 2:
+                    menu_numb = 3
+                    pause2 = True
+                if event.key == K_RETURN and menu_numb == 1:
+                    menu_numb = 3
+                    pause2 = False
+                    pause = True
+            
+            pygame.display.flip()
+        pygame.display.flip()    
+    
+    #looping da pausa inicial
+    while numb < 5:
+        tela.blit(fundo3 , (0,0))
+        if numb <= 4 :
+            mensagem5 = f'{contagem}'
+            texto_formatado5 = fonte1.render(mensagem5, True, (217,135,25))
+            tela.blit(texto_formatado5, (400,250))
+            time.sleep(0.8)
+            numb = numb + 1
+            contagem = contagem - 1
+        if numb == 5:
+            mensagem4 = 'Te lasca, fi'
+            texto_formatado4 = fonte1.render(mensagem4, True, (217,135,25))
+            tela.blit(fundo3 , (0,0))
+            tela.blit(texto_formatado4, (320,250))
+            pygame.display.flip()
+            time.sleep(1)
+            numb = numb + 1
+        
+        pygame.display.flip()
+    
+    #mais definidores fps, mensagem(pontos), rodando o fundo e os pontos.
+    relogio.tick(60)
     mensagem = f'Pontos: {pontos}'
     texto_formatado = fonte.render(mensagem, True, (255,215,0))
-    mensagem1 = 'Pressione a tecla R para jogar novamente'
-    texto_formatado1 = fonte1.render(mensagem1, True, (255,255,255))
-    mensagem2 = 'Game over!'
-    texto_formatado2 = fonte.render(mensagem2, True, (255,0,0))
-    mensagem3 = 'Dev: Pedro <3'
-    texto_formatado3 = fonte2.render(mensagem3, True, (255,0,0))
-    tela.blit(fundo , (0,0))
+    tela.blit(fundo3 , (0,0))
+    tela.blit(texto_formatado, (500,40))
+    
+    #definindo o if q fechará o jogo.
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             exit()
-    
+    #definindo os controles.
     if event.type == KEYDOWN:
             if event.key == K_LEFT and x_cobra > 10:
                 x_cobra = x_cobra - velocidade
@@ -79,19 +230,22 @@ while True:
             else:
                 pass
     
-    square = pygame.draw.rect(tela, (0,255,0), (x_cobra,y_cobra,20,20))
+    #desenhando objetos.
+    square = pygame.draw.rect(tela, (127,0,255), (x_cobra,y_cobra,20,20))
 
-    gota = pygame.draw.rect(tela, (170, 255, 255), (x, y, 10, 30))
-    gota1 = pygame.draw.rect(tela, (145, 255, 255), (x1, y1, 10, 30))
-    gota2 = pygame.draw.rect(tela, (145, 255, 255), (x2, y2, 10, 30))
-    gota3 = pygame.draw.rect(tela, (145, 255, 255), (x3, y3, 10, 30))
+    gota = pygame.draw.rect(tela, (gotas), (x, y, 5, 30))
+    gota1 = pygame.draw.rect(tela, (gotas), (x1, y1, 5, 30))
+    gota2 = pygame.draw.rect(tela, (gotas), (x2, y2, 5, 30))
+    gota3 = pygame.draw.rect(tela, (gotas), (x3, y3, 5, 30))
     
+    #dando velocidade aos objetos.
     y = y + vel
     y1 = y1 + vel
     y2 = y2 + vel
     y3 = y3 + vel
     pontos = pontos + 1
     
+    #reposicionando os objetos.
     if y >= 600 and y2 >= 600 and y3 >= 600:
         escolha = 0
         y = randint(0,10)
@@ -103,10 +257,12 @@ while True:
         x2 = randint(0,780)
         x3 = randint(0,780)
     
+    #correndo a pontuação.
     if pontos == pontuaçao:
-        vel = vel + 1
+        vel = vel + 0.1
         pontuaçao = pontuaçao + 100
     
+    #checando se o cubo colidiu com as gotas.
     if square.colliderect(gota):
         morreu = True
     if square.colliderect(gota1):
@@ -115,20 +271,27 @@ while True:
         morreu = True
     if square.colliderect(gota3):
         morreu = True
-
+    
+    #desenhando a pontuação.
+    tela.blit(texto_formatado, (500,40))
+    
+    #looping quando morre
     while morreu == True:
-        tela.blit(fundo, (0,0))
-        tela.blit(texto_formatado, (270,320))
-        tela.blit(texto_formatado1, (100,260))
+        tela.blit(fundo2, (0,0))
+        tela.blit(texto_formatado, (290,320))
+        tela.blit(texto_formatado1, (70,260))
         tela.blit(texto_formatado2, (280,160))
         tela.blit(texto_formatado3, (10,580))
         pygame.display.update()
+        #definindo o if q fechará o jogo.
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 exit()
+            
+            #definindo a tecla q reiniciará o jogo.
             if event.type == KEYDOWN:
-                if event.key == K_r:
+                if event.key == K_SPACE:
                     reiniciar_jogo()
                     y = randint(0,10)
                     y1 = randint(0,10)
@@ -138,6 +301,8 @@ while True:
                     x1 = randint(0,780)
                     x2 = randint(0,780)
                     x3 = randint(0,780)
-    
-    tela.blit(texto_formatado, (500,40))
+                    numb = 1
+                    contagem = 3
+                    tela.blit(fundo3 , (0,0))
+    #atualizando a tela.
     pygame.display.flip()
