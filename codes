@@ -66,7 +66,6 @@ def reiniciar_jogo():
     
     
 #definidores de fundo(background), tela, nome da janela, fps, mensagens q apareceram na tela.
-fundo1 = pygame.image.load("background1.png")
 fundo2 = pygame.image.load("bridge.com_pixel-art-bridge-night_800x600.jpg")
 fundo3 = pygame.image.load("sky.png")
 tela = pygame.display.set_mode((largura_x, altura_y))
@@ -92,7 +91,7 @@ while True:
         mensagem43 = 'Sair'
         texto_formatado43 = fonte3.render(mensagem43, True, (corm3))
         mensagem44 = 'Casuality'
-        texto_formatado44 = fonte4.render(mensagem44, True, (255,0,255))
+        texto_formatado44 = fonte4.render(mensagem44, True, (204,0,255))
         tela.blit(texto_formatado41, (310,250))#0
         tela.blit(texto_formatado42, (320,310))#10
         tela.blit(texto_formatado43, (360,370))#40
@@ -112,17 +111,18 @@ while True:
                 exit()#ajeita a pourra do rgb do ttitulo
         
         if menu_numb == 3:
-            corm1 = 200,100,255
+            corm1 = 204,150,100
         else:
             corm1 = 255,0,255
         if menu_numb == 2:
-            corm2 = 200,100,255
+            corm2 = 204,150,100
         else:
             corm2 = 255,0,255
         if menu_numb == 1:
-            corm3 = 200,100,255
+            corm3 = 204,150,100
         else:
             corm3 = 255,0,255
+        
         if event.type == KEYDOWN:
             if event.key == K_RETURN and menu_numb == 3:
                 numb = 1
@@ -158,17 +158,17 @@ while True:
                     pygame.quit()
                     exit()
             if menu_numb == 3:
-                corm1 = 170,0,255
+                corm1 = 204,204,0
             else:
-                corm1 = 127,0,255
+                corm1 = 255,0,255
             if menu_numb == 2:
-                corm2 = 170,0,255
+                corm2 = 204,204,0
             else:
-                corm2 = 127,0,255
+                corm2 = 255,0,255
             if menu_numb == 1:
-                corm3 = 170,0,255
+                corm3 = 204,204,0
             else:
-                corm3 = 127,0,255
+                corm3 = 255,0,255
             if event.type == KEYUP:
                 if event.key == K_RETURN and menu_numb == 3:
                     numb = 1
@@ -195,7 +195,7 @@ while True:
             numb = numb + 1
             contagem = contagem - 1
         if numb == 5:
-            mensagem4 = 'Te lasca, fi'
+            mensagem4 = '         Vai '
             texto_formatado4 = fonte1.render(mensagem4, True, (217,135,25))
             tela.blit(fundo3 , (0,0))
             tela.blit(texto_formatado4, (320,250))
